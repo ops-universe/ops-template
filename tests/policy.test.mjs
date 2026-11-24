@@ -1,8 +1,12 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {decide} from '../src/policy.mjs';
-test('allows low risk allowlisted action',()=>assert.equal(decide({name:'read',risk:'low'},['read']),'allow'));
-test('requires review for high risk',()=>assert.equal(decide({name:'update',risk:'high'},['update']),'review'));
-test('denies unlisted action',()=>assert.equal(decide({name:'delete',risk:'low'},['read']),'deny'));
-test('denies unknown risk',()=>assert.equal(decide({name:'read',risk:'unknown'},['read']),'deny'));
-test('denies malformed input',()=>assert.equal(decide(null,[]),'deny'));
+const policy=Object.freeze({read:'low',update:'high',unknown:'unclassified'});
+test('allow scoped read',()=>assert.equal(decide({name:'read'},policy),'allow'));
+test('review configured high risk',()=>assert.equal(decide({name:'update'},policy),'review'));
+test('deny unlisted action',()=>assert.equal(decide({name:'delete'},policy),'deny'));
+test('deny unknown configured risk',()=>assert.equal(decide({name:'unknown'},policy),'deny'));
+test('deny malformed input',()=>assert.equal(decide(null,policy),'deny'));
+test('caller cannot downgrade trusted risk',()=>assert.equal(decide({name:'update',risk:'low'},policy),'review'));
+test('deny inherited keys',()=>assert.equal(decide({name:'toString'},policy),'deny'));
+test('deny absent policy',()=>assert.equal(decide({name:'read'},null),'deny'));

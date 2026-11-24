@@ -1,6 +1,7 @@
-const risks = new Set(['low', 'high']);
-export function decide(action, allowed = []) {
-  if (!action || typeof action.name !== 'string' || !Array.isArray(allowed) || !risks.has(action.risk)) return 'deny';
-  if (!allowed.includes(action.name)) return 'deny';
-  return action.risk === 'high' ? 'review' : 'allow';
+// Illustrative pure policy: risk is assigned by trusted configuration, not caller input.
+export function decide(action, policy) {
+  if (!action || typeof action.name !== 'string' || !policy || typeof policy !== 'object' || Array.isArray(policy)) return 'deny';
+  if (!Object.hasOwn(policy, action.name)) return 'deny';
+  const risk = policy[action.name];
+  return risk === 'low' ? 'allow' : risk === 'high' ? 'review' : 'deny';
 }
