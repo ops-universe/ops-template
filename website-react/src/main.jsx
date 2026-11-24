@@ -1,0 +1,5 @@
+import React from 'react';
+import {createRoot} from 'react-dom/client';
+import './style.css';
+function App(){const [dark,setDark]=React.useState(true);return <div className={dark?'site dark':'site'}><header><a href="https://github.com/ops-universe">Ops Universe</a><button onClick={()=>setDark(!dark)} aria-pressed={dark}>Dark theme</button></header><main><small>DEVELOPER PREVIEW</small><h1>Engineer responsibly.<br/><em>Deploy confidently.</em></h1><p>Build reliable AI systems with explicit authorization and reproducible evidence.</p><a className="cta" href="https://github.com/ops-universe/ops-template">View starter on GitHub</a><section aria-label="Engineering principles">{['Vendor independence','Deterministic policies','Reproducible evidence'].map(x=><article key={x}>{x}</article>)}</section></main><footer>Ops Universe · <a href="https://github.com/ops-universe/ops-standards">Engineering standards</a> · <a href="https://buymeacoffee.com/ankitparekh">Support</a></footer></div>};
+createRoot(document.getElementById('root')).render(<App/>);
