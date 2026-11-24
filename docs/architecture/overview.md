@@ -1,3 +1,3 @@
 # Architecture
 
-Input action → deterministic policy → allow/review/deny. The example never executes external actions. In production, risk and allowlists must come from trusted policy configuration, not user or model input. Authorization must be enforced at the execution boundary. No real identity or approvals are implemented here.
+Action name → trusted policy configuration → pure allow/review/deny decision. Caller-supplied risk is ignored. The demo never executes tools, verifies identity or stores approval receipts. Real deployments need tenant-scoped policy, authentication, execution-boundary enforcement, policy versioning and auditable approval verification. See ADR 001.

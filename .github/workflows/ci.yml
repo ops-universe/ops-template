@@ -14,3 +14,24 @@ jobs:
           node-version: '22'
       - run: npm ci
       - run: npm test
+  website-build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: website-react
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install website dependencies
+        run: |
+          if [ -f package-lock.json ]; then npm ci; else npm install --no-audit --no-fund; fi
+      - run: npm run build
+      - name: Verify root and project base builds
+        run: |
+          test -f dist/index.html
+          VITE_BASE_PATH=/ops-template/ npm run build
+          grep -q '/ops-template/assets/' dist/index.html
