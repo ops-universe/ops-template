@@ -4,7 +4,7 @@ permissions:
   contents: read
 jobs:
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
         with:
@@ -15,7 +15,7 @@ jobs:
       - run: npm ci
       - run: npm test
   website-build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     defaults:
       run:
         working-directory: website-react
@@ -28,7 +28,8 @@ jobs:
           node-version: '22'
       - name: Install website dependencies
         run: |
-          if [ -f package-lock.json ]; then npm ci; else npm install --no-audit --no-fund; fi
+          npm ci
+      - run: npm audit --audit-level=high
       - run: npm run build
       - name: Verify root and project base builds
         run: |
