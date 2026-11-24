@@ -14,6 +14,6 @@
     "@ops-universe/ui": "git+https://github.com/ops-universe/ops-ui.git#b0be9d8b5112ebfc716490a2aa607c6d31380399"
   },
   "devDependencies": {
-    "vite": "6.4.1"
+    "vite": "6.4.6"
   }
 }
